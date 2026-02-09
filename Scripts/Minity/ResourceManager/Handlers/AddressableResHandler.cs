@@ -12,6 +12,8 @@ namespace Minity.ResourceManager.Handlers
     [ResHandler("addressable")]
     public class AddressableResHandler : IResHandler
     {
+        private AsyncOperationHandle? _addressableHandle;
+        
         private Object? _resource;
         private string _location;
         
@@ -30,13 +32,9 @@ namespace Minity.ResourceManager.Handlers
                 throw new Exception("Resource load failed");
             }
 
-            if (task.Result)
-            {
-                _resource = Object.Instantiate(task.Result);
-            }
-                
-            Addressables.Release(task);
-
+            _resource = task.Result;
+            _addressableHandle = task;
+            
             return _resource!;
         }
 
@@ -45,20 +43,20 @@ namespace Minity.ResourceManager.Handlers
             var handle = Addressables.LoadAssetAsync<T>(_location);
             handle.WaitForCompletion();
             
-            _resource = Object.Instantiate(handle.Result);
-                
-            Addressables.Release(handle);
+            _resource = handle.Result;
+            _addressableHandle = handle;
             
             return _resource;
         }
 
         public void Release()
         {
-            if (_resource == null)
+            if (_addressableHandle == null || !_addressableHandle.Value.IsValid())
             {
                 return;
             }
-            Object.DestroyImmediate(_resource);
+            Addressables.Release(_addressableHandle.Value);
+            _addressableHandle = null;
             _resource = null;
         }
     }
