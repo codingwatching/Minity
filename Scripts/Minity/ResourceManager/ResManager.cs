@@ -281,7 +281,7 @@ namespace Minity.ResourceManager
                                 {
                                     SceneUD _ => "Release after current scene is unloaded",
                                     ManualUD _ => "Manual release",
-                                    ObjectLinkUD olu => $"Using by Object '{(olu.TryGetLinkObject(out var obj) ? obj.name : "")}'",
+                                    ObjectLinkUD olu => $"Using by Object '{(olu.GetLinkObject().name)}'",
                                     TransientAfterReadyUD fu => $"Release after {fu.GetRemainingFrames()} frames",
                                     _ => "Unknown usage"
                                 });

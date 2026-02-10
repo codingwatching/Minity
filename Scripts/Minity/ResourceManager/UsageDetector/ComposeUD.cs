@@ -47,7 +47,7 @@ namespace Minity.ResourceManager.UsageDetector
             
             if (detector is ObjectLinkUD olu)
             {
-                if (!olu.TryGetLinkObject(out var obj) || !_detectedObjects.Add(obj))
+                if (!_detectedObjects.Add(olu.GetLinkObject()))
                 {
                     return this;
                 }

@@ -5,9 +5,9 @@ namespace Minity.ResourceManager.UsageDetector
 {
     public struct ObjectLinkUD : IUsageDetector
     {
-        private WeakReference<Object> _refer;
+        private Object _refer;
         
-        public bool TryGetLinkObject(out Object obj) => _refer.TryGetTarget(out obj);
+        public Object GetLinkObject() => _refer;
         
         public void Initialize(object? bind)
         {
@@ -15,12 +15,17 @@ namespace Minity.ResourceManager.UsageDetector
             {
                 throw new Exception("Must bind a object");
             }
-            _refer = new WeakReference<Object>(obj);
+            _refer = obj;
         }
 
         public bool IsUsing()
         {
-            return _refer.TryGetTarget(out var obj) && obj;
+            if (_refer)
+            {
+                return true;
+            }
+            _refer = null;
+            return false;
         }
         
         public IUsageDetector CombineDetector(IUsageDetector detector)
