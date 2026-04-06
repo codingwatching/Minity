@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Minity.UI
 {
-    [CreateAssetMenu(fileName = "UIList", menuName = "Minity/UI List")]
+    // [CreateAssetMenu(fileName = "UIList", menuName = "Minity/UI List")]
+    [Obsolete("Use UIConfig instead")]
     public class UIList : ScriptableObject
     {
         [Serializable]

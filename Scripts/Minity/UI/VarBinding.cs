@@ -12,12 +12,30 @@ namespace Minity.UI
         
         public T Value
         {
-            set => Variable.SetValue(value);
-            get => (T)Variable.GetValue();
+            set 
+            {
+                if (!Variable)
+                {
+                    throw new Exception("Variable not set");
+                }
+                Variable.SetValue(value);
+            }
+            get
+            {
+                if (!Variable)
+                {
+                    throw new Exception("Variable not set");
+                }
+                return (T)Variable.GetValue();
+            }
         }
         
         internal override object GetValue()
         {
+            if (!Variable)
+            {
+                throw new Exception("Variable not set");
+            }
             return Variable.GetValue();
         }
 
